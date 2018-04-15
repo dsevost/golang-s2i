@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[ -z "$DEBUG" ] || set -x
+
 set -e
 
 if [ -z "$RUN_PRG" ] ; then

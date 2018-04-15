@@ -2,7 +2,7 @@
 
 [ -z "$DEBUG" ] || {
     set -x
-    export VERBOS="-v"
+    export VERBOSE="-v"
 }
 
 set -e
@@ -31,7 +31,7 @@ TARGETS=${TARGETS:-"main"}
 for t in $TARGETS ; do
     if [ -z "$GO_GLOBAL_PROJECT_NAME" ] ; then
 	echo "---> Using simple build..."
-        go get $VRBOSE $t
+        go get $VERBOSE $t
 	go install $VERBOSE $t
     else
 	echo "---> Global Go project detected ${GO_GLOBAL_PROJECT_NAME}, using global build..."
