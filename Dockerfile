@@ -1,9 +1,10 @@
 FROM fedora:27
 
 ARG MNT="dmitry sevostyanov"
-ARG YUM=dnf
 
 MAINTAINER $MNT
+
+ARG YUM=dnf
 
 RUN \
     $YUM install -y --setopt=tsflags=nodocs \
