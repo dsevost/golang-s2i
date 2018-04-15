@@ -1,7 +1,7 @@
 FROM fedora:27
 
 ARG MNT="dmitry sevostyanov"
-ARG YUM=yum
+ARG YUM=dnf
 
 MAINTAINER $MNT
 
