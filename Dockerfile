@@ -44,6 +44,9 @@ ENV \
 
 COPY s2i ${S2I_SCRIPTS_PATH}/
 
+RUN \
+    chown 1001 $APP_ROOT
+
 USER 1001
 
 CMD ${S2I_SCRIPTS_PATH}/usage
