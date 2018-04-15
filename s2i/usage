@@ -1,0 +1,37 @@
+#!/bin/sh
+
+IMAGEVER=$($GO_VERSION | sed s/\.//)
+
+cat <<EOF
+This is a S2I Go base image:
+To use it, install S2I: https://github.com/openshift/source-to-image
+
+Sample invocation:
+
+$ s2i build -e DEBUG=1 https://github.com/dsevost/golang-s2i \\
+     --context-dir=test/test-app golang-s2i golang-s2i-test
+
+You can then run the resulting image via:
+
+$ docker run --rm -p 8080:8080 golang-s2i-test
+
+Well-known Build Env varibles:
+- GO_GLOBAL_PROJECT_NAME name of Go project, for example github.com/kubernetes-incubator/external-storage
+- TARGETS directory where go build runs, for example nfs/cmd/nfs-provisioner
+- DEBUG set to non-empty for debug and verbose output
+
+Runtime Env variables:
+- RUN_PRG name of main runnable program if multi-module project
+
+Global project build:
+
+$ s2i build \\
+    -e DEBUG=1 \\
+    -e GO_GLOBAL_PROJECT_NAME=github.com/kubernetes-incubator/external-storage \\
+    -e TARGETS='nfs/cmd/nfs-provisioner' \\
+    https://github.com/kubernetes-incubator/external-storage \\
+    golang-s2i external-storage
+
+$ docker run --rm -ti -e RUN_PRG=nfs-provisioner external-storage 
+
+EOF

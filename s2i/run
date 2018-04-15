@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+if [ -z "$RUN_PRG" ] ; then
+    RUN_PRG=main
+    for t in $TARGETS ; do
+	p=$(basename $t)
+	if [ -x "$GOBIN/$p" ] ; then
+	    RUN_PRG=$p
+	    break
+	fi
+    done
+fi
+
+exec $GOBIN/$RUN_PRG

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+[ -z "$DEBUG" ] || {
+    set -x
+    export VERBOS="-v"
+}
+
+set -e
+
+echo
+echo "===> Build started at $(date)"
+echo
+START=$SECONDS
+
+# Unconditionally print elapsed build time at exit
+function finish {
+  echo "===> Elapsed time: $(($SECONDS - $START)) seconds"
+}
+trap finish EXIT
+
+echo "---> Preparing source..."
+
+[ -z "$GO_GLOBAL_PROJECT_NAME" ] && work_dir=$SOURCE/main || work_dir=$SOURCE/$GO_GLOBAL_PROJECT_NAME
+
+mkdir -p $work_dir
+
+tar -C /tmp/src -c . | tar -C $work_dir -x
+
+TARGETS=${TARGETS:-"main"}
+
+for t in $TARGETS ; do
+    if [ -z "$GO_GLOBAL_PROJECT_NAME" ] ; then
+	echo "---> Using simple build..."
+        go get $VRBOSE $t
+	go install $VERBOSE $t
+    else
+	echo "---> Global Go project detected ${GO_GLOBAL_PROJECT_NAME}, using global build..."
+	go install $VERBOSE $GO_GLOBAL_PROJECT_NAME/$t
+    fi
+done
