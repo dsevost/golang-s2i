@@ -10,6 +10,8 @@ set -e
 echo
 echo "===> Build started at $(date)"
 echo
+echo "---> Security context $(id)"
+echo
 START=$SECONDS
 
 # Unconditionally print elapsed build time at exit
