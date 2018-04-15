@@ -46,8 +46,8 @@ COPY s2i ${S2I_SCRIPTS_PATH}/
 
 RUN \
     mkdir -p $HOME && \
-    chown 1001 $HOME && \
-    chown 777 $HOME
+    chown 1001 -R $HOME && \
+    chown 777 -R $HOME
 
 USER 1001
 
