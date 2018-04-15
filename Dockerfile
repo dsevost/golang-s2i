@@ -45,9 +45,9 @@ ENV \
 COPY s2i ${S2I_SCRIPTS_PATH}/
 
 RUN \
-    mkdir -p $HOME \
-    chown 1001 $HOME \
-    chown 777 $APP_ROOT
+    mkdir -p $HOME && \
+    chown 1001 $HOME && \
+    chown 777 $HOME
 
 USER 1001
 
