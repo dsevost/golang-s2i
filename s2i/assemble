@@ -36,7 +36,7 @@ for t in $TARGETS ; do
         go get $VERBOSE $t
 	go install $VERBOSE $t
     else
-	echo "---> Global Go project detected ${GO_GLOBAL_PROJECT_NAME}, using global build..."
+	echo "---> Global Go project detected ${GO_GLOBAL_PROJECT_NAME}, for module '$t', using global build..."
 	go install $VERBOSE $GO_GLOBAL_PROJECT_NAME/$t
     fi
 done
