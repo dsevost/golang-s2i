@@ -35,20 +35,24 @@ objects:
       type: Docker
     triggers:
     - type: ConfigChange
-    - imageChange: {}
+    - imageChange:
+        from:
+          kind: ImageStreamTag
+          name: ${BASE_IMAGE}:${BASE_IMAGE_TAG}
       type: ImageChange
+#    - imageChange: {}
+#      type: ImageChange
 - apiVersion: v1
   kind: ImageStream
   metadata:
     labels:
       build: ${BUILDER_NAME}
-    name: fedora
+    name: ${BASE_IMAGE}
   spec:
     lookupPolicy:
       local: false
     tags:
-    - 
-      from:
+    - from:
         kind: DockerImage
         name: ${BASE_IMAGE}:${BASE_IMAGE_TAG}
       name: ${BASE_IMAGE_TAG}
@@ -64,8 +68,7 @@ objects:
     lookupPolicy:
       local: false
     tags:
-    - 
-      from:
+    - from:
         kind: DockerImage
         name: ${BUILDER_NAME}:latest
       name: latest
