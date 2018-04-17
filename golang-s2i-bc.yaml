@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: golang-s2i
+parameters:
+- name: BUILDER_NAME
+  value: golang-s2i
+- name: BASE_IMAGE
+  value: fedora
+- name: BASE_IMAGE_TAG
+  value: "27"
+- name: GIT_REPO
+  value: https://github.com/dsevost/golang-s2i
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: ${BUILDER_NAME}
+    name: ${BUILDER_NAME}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${BUILDER_NAME}:latest
+    source:
+      git:
+        uri: ${GIT_REPO}
+      type: Git
+    strategy:
+      dockerStrategy:
+        from:
+          kind: ImageStreamTag
+          name: ${BASE_IMAGE}:${BASE_IMAGE_TAG}
+      type: Docker
+    triggers:
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: ${BUILDER_NAME}
+    name: fedora
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - 
+      from:
+        kind: DockerImage
+        name: ${BASE_IMAGE}:${BASE_IMAGE_TAG}
+      name: ${BASE_IMAGE_TAG}
+      referencePolicy:
+        type: Source
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      build: ${BUILDER_NAME}
+    name: ${BUILDER_NAME}
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - 
+      from:
+        kind: DockerImage
+        name: ${BUILDER_NAME}:latest
+      name: latest
