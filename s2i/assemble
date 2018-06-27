@@ -26,7 +26,7 @@ echo "---> Preparing source..."
 
 mkdir -p $work_dir
 
-tar -C /tmp/src -c . | tar -C $work_dir -xv
+tar -C /tmp/src -c . | tar -C $work_dir $VERBOSE -x
 
 TARGETS=${TARGETS:-"main"}
 
