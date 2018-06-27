@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: golang-s2i
+parameters:
+- name: APP_NAME
+  value: ovirt-flex-volume
+- name: GO_GLOBAL_PROJECT_NAME
+  value: github.com/dsevost/ovirt-openshift-extensions
+- name: GO_CMDS
+  value: cmd/ovirt-flexdriver cmd/ovirt-provisioner
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    failedBuildsHistoryLimit: 1
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${APP_NAME}:latest
+    source:
+      git:
+        uri: https://${GO_GLOBAL_PROJECT_NAME}
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: DEBUG1
+          value: "1"
+        - name: GO_GLOBAL_PROJECT_NAME
+          value: ${GO_GLOBAL_PROJECT_NAME}
+        - name: TARGETS
+          value: ${GO_CMDS}
+        from:
+          kind: ImageStreamTag
+          name: ${APP_NAME}:latest
+      type: Source
+    successfulBuildsHistoryLimit: 2
+    triggers:
+    - type: ConfigChange
+    - imageChange: {}
+      type: ImageChange
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${APP_NAME}
+    name: ${APP_NAME}
+  spec:
+    tags:
+    - name: latest

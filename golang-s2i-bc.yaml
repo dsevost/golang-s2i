@@ -68,7 +68,10 @@ objects:
     lookupPolicy:
       local: false
     tags:
-    - from:
+    - annotations:
+        supports: golang
+        tags: builder,go,golang
+      from:
         kind: DockerImage
         name: ${BUILDER_NAME}:latest
       name: latest
