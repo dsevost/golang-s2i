@@ -9,6 +9,8 @@ parameters:
   value: github.com/dsevost/ovirt-openshift-extensions
 - name: GO_CMDS
   value: cmd/ovirt-flexdriver cmd/ovirt-provisioner
+- name: DEBUG
+  valuse: yes
 objects:
 - apiVersion: v1
   kind: BuildConfig
@@ -29,8 +31,8 @@ objects:
     strategy:
       sourceStrategy:
         env:
-        - name: DEBUG1
-          value: "1"
+        - name: DEBUG
+          value: ${DEBUG}
         - name: GO_GLOBAL_PROJECT_NAME
           value: ${GO_GLOBAL_PROJECT_NAME}
         - name: TARGETS
