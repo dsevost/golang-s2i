@@ -9,6 +9,7 @@ ARG YUM=dnf
 RUN \
     $YUM install -y --setopt=tsflags=nodocs \
 	git \
+	godep \
 	golang \
 	make \
 	tar \
