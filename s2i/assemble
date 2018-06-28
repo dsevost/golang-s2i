@@ -22,7 +22,7 @@ trap finish EXIT
 
 echo "---> Preparing source..."
 
-[ -z "$GO_GLOBAL_PROJECT_NAME" ] && work_dir=$SOURCE/main || work_dir=$GOPATH
+[ -z "$GO_GLOBAL_PROJECT_NAME" ] && work_dir=$SOURCE/main || work_dir=$SOURCE/$GO_GLOBAL_PROJECT_NAME
 
 mkdir -p $work_dir
 
